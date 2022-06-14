@@ -4,7 +4,6 @@ In this article step-by-step process is discussed to setup LAMP stack in AWS EC2
 - Connection to the instance from your system
 - Install Ubuntu 18.04
 - Install Apache 2.4
-- Install PHP 7.2
 - Install MySql 5.7
 - Install phpMyAdmin 4
 
@@ -71,5 +70,65 @@ The key file that was downloaded will now be used to connect to the EC2 instance
     sudo apt-get install apache2
     ```
 3. Following the installation of Apache, if you navigate to the public IP of the instance (that can be found from the EC2 Console) from a browser, you will see the familiar Apache Welcome Page. This implies Apache is running perfectly.
+### Step 8 - Installing MySql
+1. Install MySql Server
+    ```sh
+    sudo apt-get install mysql-server
+    ```
+2. After MySql has been installed, you will need to set the root password of the database and secure it using the following command :
+    ```sh
+    sudo mysql_secure_installation
+    ```
+3. You will be presented a screen where MySQL asks whether you would like to activate the VALIDATE PASSWORD PLUGIN. For now, keeping things simple, type no.
+4. In the next type the root password of your choice. Confirm it again.
+5. In the next screen MySql will ask whether to remove anonymous users. Type yes
+6. Disallow root login remotely? Type No
+7. Remove test database and access to it? Type Yes
+8. Reload privilege tables now? Type Yes
+9. After the password has been set you can check the whether MySQL is working correctly by logging into the database with the command :
+    ```sh
+    sudo mysql -u root -p
+    ```
+    Password is the same that was set in the previous step.
+    If everything went smoothly, you will be welcomed by the mysql prompt.
+10. Type exit to get out of MySql
+    ```sh
+    exit
+    ```
+### Step 9 - Installing phpMyAdmin
+To install phpMyAdmin execute the following command :
+```sh
+sudo apt install phpmyadmin
+```
+Following which you will be presented with options to configure phpmyadmin for the server :
+1. The first option is to select the proper web server. It is important to note here that although apache2 is highlighted it hasn't been selected.
 
+    Select apache2 by pressing the space-bar. Then press Tab key that takes us to the Ok button. Now press enter.
+2. Next option is to configure the database for phpmyadmin with dbconfig-common. Select the Yes option here.
+3. Then password is asked for login to phpmyadmin. By default the username is phpmyadmin. You are now setting the password for this user (this is different from the roor user).
+
+    Press Tab key to go the Ok button.
+4. Now phpMyAdmin can be accessed from the browser by navigating to
+    ```sh
+    http://[SERVER_PUBLIC_IP]/phpmyadmin
+    ```
+    Enter the login credentials with user phpmyadmin and the associated password.
+
+### Step 11 - Allowing Mysql Root Login through phpMyAdmin
+This step is optional.
+By default you cannot login as root user through phpMyAdmin. To do this perform the below steps :
+1. Login to MySql root.
+    ```sh
+    sudo mysql -u root -p
+    ```
+2. Enter the query to change root login authentication from socket to password.
+    ```sh
+    ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+    ```
+    Replace password by the root password you entered while installing MySql.
+3. Enter the query to put the changes into effect.
+    ```sh
+    FLUSH PRIVILEGES;
+    ```
+    Now you can login as root from phpMyAdmin.
 
