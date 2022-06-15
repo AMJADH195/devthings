@@ -1,4 +1,4 @@
-## How to Install LAMP (Linux, Apache, MySql & PHP) on AWS EC2 with Ubuntu 18.04
+## How to Install Apache, MySql and Phpmyadmin on AWS EC2 with Ubuntu 18.04
 In this article step-by-step process is discussed to setup LAMP stack in AWS EC2. This will include :
 - Creating an EC2 instance
 - Connection to the instance from your system
